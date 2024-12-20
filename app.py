@@ -23,7 +23,7 @@ ram_options = [2, 3, 4, 6, 8, 12, 16]
 input_name = st.text_input("Masukkan nama hp yang diinginkan").lower()
 # Pilihan kapasitas ROM yang tersedia
 input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options)
-input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", rom_options) 
+input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options) 
 
 # Cek apakah semua input sudah diisi
 if input_name and input_rom and input_ram:
