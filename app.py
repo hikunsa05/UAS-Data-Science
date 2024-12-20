@@ -28,19 +28,8 @@ input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", ro
 # Dropdown untuk memilih kapasitas RAM
 input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options)
 
-# Validasi input ROM dan RAM
-if input_rom != "Silakan pilih ROM" and input_ram != "Silakan pilih RAM":
-    st.write(f"Smartphone yang dicari: {input_name.capitalize()}")
-    st.write(f"ROM yang dipilih: {input_rom} GB")
-    st.write(f"RAM yang dipilih: {input_ram} GB")
-else:
-    if input_rom == "Silakan pilih ROM":
-        st.warning("Silakan pilih kapasitas ROM terlebih dahulu.")
-    if input_ram == "Silakan pilih RAM":
-        st.warning("Silakan pilih kapasitas RAM terlebih dahulu.")
-# # Menggunakan slider dengan step yang sesuai
-# input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options) 
-# input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options) 
+input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options) 
+input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options) 
 
 # Cek apakah semua input sudah diisi
 if input_name and input_rom and input_ram:
