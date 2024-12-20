@@ -19,7 +19,12 @@ st.write("Masukkan preferensi Anda untuk mendapatkan rekomendasi smartphone:")
 
 # Input pengguna
 input_name = st.text_input("Masukkan nama hp yang diinginkan").lower()
-input_rom = st.slider("Masukkan kapasitas ROM yang diinginkan (dalam GB)", 8, 512, 64)  # Slider untuk ROM
+input_rom = st.slider(
+    "Masukkan kapasitas ROM yang diinginkan (dalam GB)", 
+    min_value=8, 
+    max_value=256, 
+    step=8
+)
 input_ram = st.slider("Masukkan kapasitas RAM yang diinginkan (dalam GB)", 2, 16, 4)  # Slider untuk RAM
 
 # Cek apakah semua input sudah diisi
