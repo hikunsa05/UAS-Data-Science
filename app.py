@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -61,17 +62,10 @@ if input_name and input_rom and input_ram:
         # Urutkan hasil berdasarkan kesamaan tertinggi
         recommended = data_filtered.sort_values(by='Similarity', ascending=False)
 
-        # Tampilkan hasil dalam format deskriptif
+        # Tampilkan hasil dalam format tabel yang rapi menggunakan st.dataframe
         st.write("### Hasil Rekomendasi:")
-        for idx, row in recommended.iterrows():
-            with st.expander(f"Smartphone: {row['Name']}"):
-                st.write(f"- **ROM**: {row['ROM(GB)']} GB")
-                st.write(f"- **RAM**: {row['RAM(GB)']} GB")
-                st.write(f"- **Ratings**: {row['Ratings']:.1f}")
-                st.write(f"- **Price**: ${row['Price']:,}")
-                st.write(f"- **Similarity Score**: {row['Similarity']:.4f}")
+        st.dataframe(recommended[['Name', 'ROM(GB)', 'RAM(GB)', 'Ratings', 'Price', 'Similarity']])
     else:
         st.write("Tidak ada smartphone yang memenuhi kriteria pencarian Anda.")
 else:
     st.write("Silakan masukkan semua preferensi untuk mendapatkan rekomendasi.")
-    
