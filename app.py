@@ -1,11 +1,9 @@
 import streamlit as st
 import pandas as pd
-import tensorflow as tf
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from tabulate import tabulate
 
 # Membaca data dari file Excel
 data = pd.read_excel('dataset/data hp.xlsx')
