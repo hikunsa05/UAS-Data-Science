@@ -21,13 +21,6 @@ rom_options = ["Silakan pilih ROM", 8, 16, 32, 64, 128, 256]
 ram_options = ["Silakan pilih RAM", 2, 3, 4, 6, 8, 12, 16]
 # Input pengguna
 input_name = st.text_input("Masukkan nama hp yang diinginkan").lower()
-
-# Dropdown untuk memilih kapasitas ROM
-input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options)
-
-# Dropdown untuk memilih kapasitas RAM
-input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options)
-
 input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options) 
 input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options) 
 
