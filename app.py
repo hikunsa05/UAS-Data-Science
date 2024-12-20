@@ -21,8 +21,17 @@ rom_options = [8, 16, 32, 64, 128, 256]
 ram_options = [2, 3, 4, 6, 8, 12, 16]
 # Input pengguna
 input_name = st.text_input("Masukkan nama hp yang diinginkan").lower()
-# Pilihan kapasitas ROM yang tersedia
-input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options)
+
+# Menggunakan slider dengan step yang sesuai
+input_rom = st.slider(
+    "Masukkan kapasitas ROM yang diinginkan (dalam GB)", 
+    min_value=min(rom_options), 
+    max_value=max(rom_options), 
+    step=8  # Step sesuai dengan pilihan ROM yang tersedia
+)
+
+# Tampilkan hasil pilihan ROM
+st.write(f"ROM yang dipilih: {input_rom} GB")
 input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options) 
 
 # Cek apakah semua input sudah diisi
