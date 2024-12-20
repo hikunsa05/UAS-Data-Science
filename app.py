@@ -29,9 +29,6 @@ input_rom = st.slider(
     max_value=max(rom_options), 
     step=8  # Step sesuai dengan pilihan ROM yang tersedia
 )
-
-# Tampilkan hasil pilihan ROM
-st.write(f"ROM yang dipilih: {input_rom} GB")
 input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options) 
 
 # Cek apakah semua input sudah diisi
