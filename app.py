@@ -2,49 +2,71 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from keras.models import load_model
+from tabulate import tabulate
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Membaca data dari file Excel
 data = pd.read_excel('dataset/data hp.xlsx')
 
-# Memuat model
-model = load_model('model.h5')
+# Pastikan data dimuat dengan benar
+st.write("### Data yang dimuat:")
+st.dataframe(data) 
 
 # Streamlit UI
-st.title("Rekomendasi Smartphone dengan Model Deep Learning")
+st.title("Rekomendasi Smartphone")
 st.write("Masukkan preferensi Anda untuk mendapatkan rekomendasi smartphone:")
 
 # Input pengguna
 input_name = st.text_input("Masukkan nama hp yang diinginkan").lower()
-input_rom = st.slider("Masukkan kapasitas ROM yang diinginkan (dalam GB)", 8, 512, 64)
-input_ram = st.slider("Masukkan kapasitas RAM yang diinginkan (dalam GB)", 2, 16, 4)
+input_rom = st.slider("Masukkan kapasitas ROM yang diinginkan (dalam GB)", 8, 512, 64)  # Slider untuk ROM
+input_ram = st.slider("Masukkan kapasitas RAM yang diinginkan (dalam GB)", 2, 16, 4)  # Slider untuk RAM
 
 # Cek apakah semua input sudah diisi
 if input_name and input_rom and input_ram:
+    # Content-Based Filtering
     # TF-IDF Vectorization untuk nama smartphone
-    tfidf = TfidfVectorizer(stop_words='english')
+    tfidf = TfidfVectorizer(stop_words='english')  # Mengabaikan kata-kata umum (stopwords)
     name_vectors = tfidf.fit_transform(data['Name'].str.lower())
+
+    # Gabungkan fitur TF-IDF dengan ROM, RAM, dan Ratings
+    numerical_features = data[['ROM(GB)', 'RAM(GB)', 'Ratings']].values
+    combined_features = pd.concat([
+        pd.DataFrame(name_vectors.toarray()),
+        pd.DataFrame(numerical_features)
+    ], axis=1).values
 
     # Query pengguna
     query_vector = tfidf.transform([input_name]).toarray()
-    query_numerical = [[input_rom, input_ram, 0]]  # Ratings diatur ke 0
+    query_numerical = [[input_rom, input_ram, 0]]  # Ratings diatur ke 0 untuk pencarian
     query_combined = pd.concat([
         pd.DataFrame(query_vector),
         pd.DataFrame(query_numerical)
     ], axis=1).values
 
-    # Gunakan model untuk prediksi
-    predicted_similarity = model.predict(query_combined)
+    # Hitung kesamaan menggunakan cosine similarity
+    similarities = cosine_similarity(query_combined, combined_features)
 
-    # Tambahkan hasil prediksi ke dataset
-    data['Predicted Similarity'] = predicted_similarity.flatten()
+    # Tambahkan skor kesamaan ke dataset
+    data['Similarity'] = similarities.flatten()
 
-    # Filter hasil
-    recommended = data.sort_values(by='Predicted Similarity', ascending=False)
+    # Filter hasil berdasarkan nama, ROM, dan RAM
+    data_filtered = data[
+        (data['Name'].str.lower().str.contains(input_name)) &  # Filter nama berbasis input
+        (data['ROM(GB)'] == input_rom) &
+        (data['RAM(GB)'] == input_ram)
+    ]
 
-    # Tampilkan hasil dalam tabel
-    st.write("### Hasil Rekomendasi:")
-    st.dataframe(recommended[['Name', 'ROM(GB)', 'RAM(GB)', 'Ratings', 'Price', 'Predicted Similarity']])
+    # Periksa apakah ada data yang cocok
+    if not data_filtered.empty:
+        # Urutkan hasil berdasarkan kesamaan tertinggi
+        recommended = data_filtered.sort_values(by='Similarity', ascending=False)
+
+        # Tampilkan hasil dalam format tabel yang rapi menggunakan st.dataframe
+        st.write("### Hasil Rekomendasi:")
+        st.dataframe(recommended[['Name', 'ROM(GB)', 'RAM(GB)', 'Ratings', 'Price', 'Similarity']])
+    else:
+        st.write("Tidak ada smartphone yang memenuhi kriteria pencarian Anda.")
 else:
     st.write("Silakan masukkan semua preferensi untuk mendapatkan rekomendasi.")
+
