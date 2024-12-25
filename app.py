@@ -17,10 +17,18 @@ st.dataframe(data)
 st.title("Rekomendasi Smartphone")
 st.write("Masukkan preferensi Anda untuk mendapatkan rekomendasi smartphone:")
 
-# Input pengguna
+# Pilihan kapasitas ROM dan RAM yang tersedia
+rom_options = ["Silakan pilih ROM", 8, 16, 32, 64, 128, 256]
+ram_options = ["Silakan pilih RAM", 2, 3, 4, 6, 8, 12, 16]
+
+# Input pengguna untuk nama hp
 input_name = st.text_input("Masukkan nama hp yang diinginkan").lower()
-input_rom = st.slider("Masukkan kapasitas ROM yang diinginkan (dalam GB)", 8, 512, 64)  # Slider untuk ROM
-input_ram = st.slider("Masukkan kapasitas RAM yang diinginkan (dalam GB)", 2, 16, 4)  # Slider untuk RAM
+
+# Dropdown untuk memilih kapasitas ROM
+input_rom = st.selectbox("Masukkan kapasitas ROM yang diinginkan (dalam GB)", rom_options)
+
+# Dropdown untuk memilih kapasitas RAM
+input_ram = st.selectbox("Masukkan kapasitas RAM yang diinginkan (dalam GB)", ram_options)
 
 # Cek apakah semua input sudah diisi
 if input_name and input_rom and input_ram:
