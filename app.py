@@ -69,4 +69,3 @@ if input_name and input_rom and input_ram:
         st.write("Tidak ada smartphone yang memenuhi kriteria pencarian Anda.")
 else:
     st.write("Silakan masukkan semua preferensi untuk mendapatkan rekomendasi.")
-
